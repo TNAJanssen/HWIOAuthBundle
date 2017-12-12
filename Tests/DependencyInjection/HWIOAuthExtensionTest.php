@@ -15,6 +15,7 @@ use Http\Client\Common\HttpMethodsClient;
 use Http\HttplugBundle\HttplugBundle;
 use HWI\Bundle\OAuthBundle\DependencyInjection\HWIOAuthExtension;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Parser;
@@ -65,7 +66,7 @@ class MyCustomProvider implements ResourceOwnerInterface
 /**
  * Code bases on FOSUserBundle tests.
  */
-class HWIOAuthExtensionTest extends \PHPUnit_Framework_TestCase
+class HWIOAuthExtensionTest extends TestCase
 {
     /**
      * @var ContainerBuilder
@@ -506,7 +507,7 @@ class HWIOAuthExtensionTest extends \PHPUnit_Framework_TestCase
 
         $definitions = $this->containerBuilder->getDefinitions();
 
-        $this->assertTrue(isset($definitions['hwi_oauth.resource_owner.my_github']));
+        $this->assertArrayHasKey('hwi_oauth.resource_owner.my_github', $definitions);
         $this->assertEquals('hwi_oauth.abstract_resource_owner.oauth2', $definitions['hwi_oauth.resource_owner.my_github']->getParent());
         $this->assertEquals('%hwi_oauth.resource_owner.github.class%', $definitions['hwi_oauth.resource_owner.my_github']->getClass());
 
@@ -524,7 +525,7 @@ class HWIOAuthExtensionTest extends \PHPUnit_Framework_TestCase
         ));
 
         $aliases = $this->containerBuilder->getAliases();
-        $this->assertTrue(isset($aliases['hwi_oauth.resource_owner.external_ressource_owner']));
+        $this->assertArrayHasKey('hwi_oauth.resource_owner.external_ressource_owner', $aliases);
         $this->assertEquals('my.service', $aliases['hwi_oauth.resource_owner.external_ressource_owner']);
     }
 
@@ -555,7 +556,7 @@ class HWIOAuthExtensionTest extends \PHPUnit_Framework_TestCase
 
         $definitions = $this->containerBuilder->getDefinitions();
 
-        $this->assertTrue(isset($definitions['hwi_oauth.resource_owner.external_ressource_owner']));
+        $this->assertArrayHasKey('hwi_oauth.resource_owner.external_ressource_owner', $definitions);
         $this->assertEquals('hwi_oauth.abstract_resource_owner.oauth2', $definitions['hwi_oauth.resource_owner.external_ressource_owner']->getParent());
         $this->assertEquals('HWI\Bundle\OAuthBundle\Tests\DependencyInjection\MyCustomProvider', $definitions['hwi_oauth.resource_owner.external_ressource_owner']->getClass());
 
